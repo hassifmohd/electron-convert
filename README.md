@@ -6,6 +6,7 @@ Electron video converter. An electron app that can convert video to another form
 
 1. This project is from udemy tutorial [here](https://www.udemy.com/electron-react-tutorial)
 2. I make a new repo from [this](https://github.com/StephenGrider/ElectronCode/tree/master/boilerplates/convert)
+3. You need FFMPEG install in order for this app to works
 
 # Getting started
 

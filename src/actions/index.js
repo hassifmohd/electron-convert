@@ -1,9 +1,29 @@
-import { ADD_VIDEO, ADD_VIDEOS, REMOVE_VIDEO, REMOVE_ALL_VIDEOS, VIDEO_PROGRESS, VIDEO_COMPLETE } from "./types";
+import {
+  ADD_VIDEO,
+  ADD_VIDEOS,
+  REMOVE_VIDEO,
+  REMOVE_ALL_VIDEOS,
+  VIDEO_PROGRESS,
+  VIDEO_COMPLETE
+} from "./types";
+import {
+  ipcRenderer
+} from 'electron';
 
 // TODO: Communicate to MainWindow process that videos
 // have been added and are pending conversion
 export const addVideos = videos => dispatch => {
 
+  //send the videos selected into electron to process (get video meta-data)
+  ipcRenderer.send('videos:added', videos);
+
+  //electron has process the videos selected. do additonal things now
+  ipcRenderer.on('metadata:complete', (event, videosMetaData) => {
+    dispatch({
+      type: ADD_VIDEOS,
+      payload: videosMetaData
+    });
+  });
 };
 
 
@@ -11,8 +31,11 @@ export const addVideos = videos => dispatch => {
 // to start converting videos.  Also listen for feedback
 // from the MainWindow regarding the current state of
 // conversion.
-export const convertVideos = () => (dispatch, getState) => {
+export const convertVideos = videos => dispatch => {
 
+  //send list of videos to be convert into electron
+  //ERROR here. Stuck at LECTURE 71, videos seems to be too big to process?
+  ipcRenderer.send('videos:convert-start', videos);
 };
 
 // TODO: Open the folder that the newly created video
@@ -24,14 +47,20 @@ export const showInFolder = outputPath => dispatch => {
 export const addVideo = video => {
   return {
     type: ADD_VIDEO,
-    payload: { ...video }
+    payload: {
+      ...video
+    }
   };
 };
 
 export const setFormat = (video, format) => {
   return {
     type: ADD_VIDEO,
-    payload: { ...video, format, err: "" }
+    payload: {
+      ...video,
+      format,
+      err: ""
+    }
   };
 };
 
