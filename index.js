@@ -22,12 +22,12 @@ app.on("ready", () => {
 });
 
 //GET LIST OF VIDEOS, CONVERT THEM ACCORDING TO FORMAT REQUESTED
-ipcMain.on('conversion:start', (event, videos) => {
+ipcMain.on('videos:convert-start', (event, videos) => {
 
   //example convert single file only
   console.log('SOMETHING HAPPEN');
-  // const video = videos[0];
-  // console.log(video.path);
+  const video = videos[0];
+  console.log(video.path);
   // console.log(video.name);
   // console.log(video.path.split(video.name)[0]);
 
